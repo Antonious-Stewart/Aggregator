@@ -1,0 +1,59 @@
+# Root of your project
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# Path to build output (binary)
+bin = "./tmp/main"
+
+# Command to build the main app entry
+cmd = "go build -o ./tmp/main ./cmd/aggregator"
+
+# Reduce rebuild delay for snappy dev loop
+delay = 500
+
+# Skip unnecessary dirs to reduce rebuild noise
+exclude_dir = ["vendor",]
+exclude_regex = ["_test.go", ".*_gen.go"]
+
+# Files to include for rebuild watching
+include_ext = ["go"]
+
+# Don’t rebuild if files are unchanged
+exclude_unchanged = true
+
+# Graceful shutdown before restarting
+send_interrupt = true
+kill_delay = "100ms"
+rerun_delay = 300
+
+# Stop on compile error (cleaner logs)
+stop_on_error = true
+
+# Optional: run linting/formatting before each build
+pre_cmd = ["go fmt ./...", "go vet ./..."]
+
+# Log file for build errors
+log = "./tmp/build-errors.log"
+
+[color]
+app = "cyan"
+build = "yellow"
+main = "magenta"
+runner = "green"
+watcher = "blue"
+
+[log]
+main_only = true
+silent = false
+time = true
+
+[misc]
+clean_on_exit = true
+
+[proxy]
+enabled = false
+
+[screen]
+clear_on_rebuild = true
+keep_scroll = false
