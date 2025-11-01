@@ -35,7 +35,6 @@ func init() {
 	logDBErrorValues(err)
 
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=%s", host, port, user, name, sslmode)
-	log.Println(connectionString)
 	db, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
