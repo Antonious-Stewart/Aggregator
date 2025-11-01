@@ -26,7 +26,6 @@ func init() {
 	user, err := config.GetVar("DB_USER")
 	logDBErrorValues(err)
 
-	password, err := config.GetVar("DB_PASSWORD")
 	logDBErrorValues(err)
 
 	name, err := config.GetVar("DB_NAME")
@@ -35,7 +34,7 @@ func init() {
 	sslmode, err := config.GetVar("SSLMODE")
 	logDBErrorValues(err)
 
-	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", host, port, user, password, name, sslmode)
+	connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=%s", host, port, user, name, sslmode)
 	log.Println(connectionString)
 	db, err := sql.Open("postgres", connectionString)
 
