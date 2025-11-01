@@ -1,13 +1,11 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
+	"github.com/Antonious-Stewart/Aggregator/internal/db"
 	"log"
 )
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	log.Println("Running app...")
+	log.Fatal(db.Pool.Ping())
 }
