@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/Antonious-Stewart/Aggregator/internal/config"
+	_ "github.com/lib/pq"
 	"log"
 )
 
@@ -35,6 +36,7 @@ func init() {
 	logDBErrorValues(err)
 
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", host, port, user, password, name, sslmode)
+	log.Println(connectionString)
 	db, err := sql.Open("postgres", connectionString)
 
 	if err != nil {

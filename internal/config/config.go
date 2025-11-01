@@ -1,7 +1,7 @@
 package config
 
 import (
-	"errors"
+	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -16,7 +16,7 @@ func init() {
 func GetVar(key string) (string, error) {
 	value := os.Getenv(key)
 	if value == "" {
-		return value, errors.New("provided key has no value")
+		return value, fmt.Errorf("provided key has no value %s", key)
 	}
 
 	return value, nil
