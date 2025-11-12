@@ -7,6 +7,10 @@
 *.dll
 *.so
 *.dylib
+*.xml
+*.iml
+
+cmd/aggregator/tmp
 
 # Test binary, built with `go test -c`
 *.test
