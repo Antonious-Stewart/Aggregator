@@ -1,11 +1,13 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/Antonious-Stewart/Aggregator/internal/config"
 	_ "github.com/lib/pq"
 	"log"
+	"time"
 )
 
 var Pool *sql.DB
@@ -16,7 +18,9 @@ func logDBErrorValues(err error) {
 	}
 }
 
-func init() {
+func Setup(ctx context.Context) {
+	cx, cancel := context.WithTimeout(ctx, time.Millisecond*500)
+	defer cancel()
 	host, err := config.GetVar("DB_HOST")
 	logDBErrorValues(err)
 
@@ -41,5 +45,10 @@ func init() {
 		log.Fatal(err)
 	}
 
+	if err := db.PingContext(cx); err != nil {
+		log.Fatal("Connection to DB Failed")
+	}
+
+	log.Println("Connected to DB...")
 	Pool = db
 }
