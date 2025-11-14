@@ -8,6 +8,10 @@ import (
 func Test_GetVarSuccess(t *testing.T) {
 	value, err := GetVar("API_URL")
 
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
 	assert.NoError(t, err, "should not return an error for a valid value.")
 	assert.Equal(t, "https://yahoo-finance15.p.rapidapi.com/api/", value, "value should be the expected value for the api url")
 }

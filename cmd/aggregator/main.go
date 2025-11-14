@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"github.com/Antonious-Stewart/Aggregator/internal/apis"
 	"github.com/Antonious-Stewart/Aggregator/internal/config"
 	"github.com/Antonious-Stewart/Aggregator/internal/db"
@@ -15,12 +14,11 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	ctx := context.Background()
-	db.Setup(ctx)
+	database := db.GetInstance()
 
 	port, err := config.GetVar("PORT")
 
-	handler := apis.Handler(db.Pool)
+	handler := apis.Routes(database)
 
 	if err != nil {
 		log.Fatal(err)
