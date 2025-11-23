@@ -1,5 +1,7 @@
+APP_DIR=cmd/aggregator
+
 change_dir:
-	cd cmd/aggregator
+	@echo "Switching to $(APP_DIR)"
 
 migrate_up:
 	goose up
@@ -17,10 +19,10 @@ test:
 	go test ./...
 
 build: change_dir
-	 go build -o bin/main main.go
+	 cd $(APP_DIR) && go build -o ../../bin/main main.go
 
 run: fmt vet test change_dir
-	go run main.go
+	cd $(APP_DIR) && go run main.go
 
 air: fmt vet test
-	air
+	cd $(APP_DIR) && air

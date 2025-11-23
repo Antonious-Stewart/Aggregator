@@ -10,20 +10,74 @@ import (
 	"sync"
 )
 
+type Pinger interface {
+	Ping() error
+}
+
+type Executor interface {
+	Exec(query string, args ...interface{}) (sql.Result, error)
+	ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error)
+}
+
+type Querier interface {
+	Query(query string, args ...interface{}) (*sql.Rows, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error)
+	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
+}
+
+type Runner interface {
+	Executor
+	Querier
+	Pinger
+}
+
 var lock = &sync.Mutex{}
 
 type Database struct {
 	Pool *sql.DB
 }
 
-type Pinger interface {
-	Ping() error
+func (db *Database) Exec(query string, args ...interface{}) (sql.Result, error) {
+	stmt, err := db.Pool.Prepare(query)
+
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	result, err := stmt.Exec(args)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+func (db *Database) ExecContext(context context.Context, query string, args ...interface{}) (sql.Result, error) {
+
+	return nil, nil
+}
+
+func (db *Database) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	return nil, nil
+}
+
+func (db *Database) QueryRow(query string, args ...interface{}) *sql.Row {
+	return nil
+}
+
+func (db *Database) QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
+	return nil, nil
+}
+
+func (db *Database) QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row {
+	return nil
 }
 
 var instance *Database
 
-func (d *Database) Ping() error {
-	if err := d.Pool.PingContext(context.Background()); err != nil {
+func (db *Database) Ping() error {
+	if err := db.Pool.PingContext(context.Background()); err != nil {
 		log.Println("Connection Unsuccessful")
 		return err
 	}
